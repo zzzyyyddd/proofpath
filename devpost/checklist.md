@@ -1,17 +1,17 @@
 ---
 doc: checklist
-status: draft
+status: approved
 ---
 
 # ProofPath — Build Checklist
 
-Build mode: not chosen — ask learn or fast before implementation.
+Build mode: fast — explicitly selected by the learner. Verified milestone commits and the planned useful hands-on checkpoints remain required.
 
-Spec explicitly approved. Scope and PRD remain unchanged. This is the official 5-build order for review, not an implementation-success report. No slice or feasibility gate is complete yet.
+Spec explicitly approved. The learner authorized this build order and instructed implementation to begin, prioritizing the working Next.js foundation and offline contracts first within slice 1. Scope and PRD remain unchanged. This checklist records planned verification, not an implementation-success report. No slice or feasibility gate is complete yet.
 
 We'll build in slices: small working steps you can try. Each adds usable behavior, with mechanical verification and a Git checkpoint before proceeding. The first slice is the skill's critical-risk exception: runnable production-schema/evidence evaluation rather than speculative interface work.
 
-Prerequisites: usable writable Git repository (current .git is empty/read-only and Git reports no repository); safely configured Cloudflare credentials and confirmed Workers Free status; authenticated read-only access/account evidence for Vercel Hobby and its included firewall rule. Never request credentials in chat. Check ignored/tracked/staged private files before commits; stage only intended project changes. No live inference tests until zero-cost account configuration is established. Credentials belong in ignored environment configuration, not this checklist or source.
+Prerequisites: Git repository confirmed on main at initial commit 171e428 with a clean worktree on entry; safely configured Cloudflare credentials and confirmed Workers Free status; authenticated read-only access/account evidence for Vercel Hobby and its included firewall rule. Never request credentials in chat. Check ignored/tracked/staged private files before commits; stage only intended project changes. No live inference tests until zero-cost account configuration is established. Credentials belong in ignored environment configuration, not this checklist or source.
 
 Stop rule: an unrepairable failed gate requiring provider/model change, new service, architectural expansion, or scope reduction stops work for the learner's decision. No weakening fixtures, silent truncation, automatic retries, paid fallback, upgrades, or billing activation. Missing access is pending verification, never a pass.
 
@@ -91,3 +91,7 @@ Reflection: Not offered yet; personal response belongs only in the ignored learn
 Activity mode: Not selected; use one suitable focused activity grounded in the actual build.
 
 ## Revisions
+
+- Build mode offered; fast mode is the stated working default pending any learner correction, with all planned hands-on checkpoints retained.
+
+- Git setup completed by the learner at 171e428; repository verified. The learner authorized beginning the saved build order, with the working Next.js foundation and strict offline contracts first inside slice 1. Live Cloudflare/account tests remain access-dependent and must not be inferred from offline passes.
