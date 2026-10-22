@@ -2,23 +2,29 @@
   "name": "proofpath",
   "version": "0.1.0",
   "private": true,
-  "engines": { "node": "22.x" },
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build --webpack",
     "start": "next start",
     "typecheck": "tsc --noEmit",
+    "test:e2e": "playwright test",
     "test": "node --import tsx scripts/test.ts",
     "eval:offline": "node --import tsx scripts/evaluate-offline.ts",
-    "eval:live": "node --import tsx scripts/evaluate-model.ts"
+    "eval:live": "node --import tsx scripts/evaluate-model.ts",
+    "browser:check": "node scripts/check-browser.mjs"
   },
   "dependencies": {
     "next": "16.4.2",
+    "pdfjs-dist": "6.4.299",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "zod": "4.6.7"
   },
   "devDependencies": {
+    "@playwright/test": "1.64.1",
     "@tailwindcss/postcss": "4.3.3",
     "@types/node": "26.6.5",
     "@types/react": "19.3.0",

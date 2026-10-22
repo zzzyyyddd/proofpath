@@ -3,3 +3,8 @@
 import '../tests/unit/evidence.test';
 import '../tests/unit/limits.test';
 import '../tests/unit/provider.test';
+import '../tests/unit/documents.test';
+import '../tests/unit/routes.test';
+import '../tests/unit/sample.test';
+import '../tests/unit/streams.test';
+import '../tests/unit/evaluation.test';

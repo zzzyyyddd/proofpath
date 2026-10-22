@@ -1,0 +1,115 @@
+{
+  "attemptId": "static-controlled-sample",
+  "documents": {
+    "old": {
+      "id": "old",
+      "filename": "sample-old-rules.txt",
+      "format": "txt",
+      "canonicalText": "Submission deadline: November 10, 2026.\nTeams may have up to five members.\nThe repository must be public.",
+      "codePointCount": 105,
+      "lineStarts": [
+        0,
+        40,
+        75
+      ],
+      "pages": [],
+      "limitations": []
+    },
+    "new": {
+      "id": "new",
+      "filename": "sample-new-rules.txt",
+      "format": "txt",
+      "canonicalText": "Submission deadline: November 15, 2026.\nTeams may have up to three members.\nThe repository must be public.\nA demo video is required.",
+      "codePointCount": 132,
+      "lineStarts": [
+        0,
+        40,
+        76,
+        107
+      ],
+      "pages": [],
+      "limitations": []
+    }
+  },
+  "classified": [
+    {
+      "id": "static-controlled-sample:0",
+      "kind": "modified",
+      "title": "Deadline changed",
+      "changeDescription": "The submission deadline changed.",
+      "oldEvidence": {
+        "documentId": "old",
+        "quote": "Submission deadline: November 10, 2026.",
+        "start": 0,
+        "end": 39,
+        "startLine": 1,
+        "endLine": 1
+      },
+      "newEvidence": {
+        "documentId": "new",
+        "quote": "Submission deadline: November 15, 2026.",
+        "start": 0,
+        "end": 39,
+        "startLine": 1,
+        "endLine": 1
+      },
+      "interpretation": "The later submission deadline may affect your preparation schedule.",
+      "suggestedAction": "Check your submission plan against the updated November 15, 2026 deadline.",
+      "uncertainty": "Quotation matching does not establish eligibility or classification correctness."
+    },
+    {
+      "id": "static-controlled-sample:1",
+      "kind": "modified",
+      "title": "Team size limit changed",
+      "changeDescription": "The maximum team size changed from five to three.",
+      "oldEvidence": {
+        "documentId": "old",
+        "quote": "Teams may have up to five members.",
+        "start": 40,
+        "end": 74,
+        "startLine": 2,
+        "endLine": 2
+      },
+      "newEvidence": {
+        "documentId": "new",
+        "quote": "Teams may have up to three members.",
+        "start": 40,
+        "end": 75,
+        "startLine": 2,
+        "endLine": 2
+      },
+      "interpretation": "Teams with more than three members may need to review the reduced team-size limit.",
+      "suggestedAction": "Review whether your team meets the new maximum of three members.",
+      "uncertainty": "Quotation matching does not establish eligibility or classification correctness."
+    },
+    {
+      "id": "static-controlled-sample:2",
+      "kind": "added",
+      "title": "Demo video required",
+      "changeDescription": "A mandatory video requirement was introduced.",
+      "oldEvidence": null,
+      "newEvidence": {
+        "documentId": "new",
+        "quote": "A demo video is required.",
+        "start": 107,
+        "end": 132,
+        "startLine": 4,
+        "endLine": 4
+      },
+      "interpretation": "Preparing a demo video may now be necessary for your submission.",
+      "suggestedAction": "Check that your submission includes the newly required demo video.",
+      "uncertainty": "Quotation matching does not establish eligibility or classification correctness."
+    }
+  ],
+  "needsReview": [],
+  "withheldCount": 0,
+  "incomplete": false,
+  "incompleteReasons": [],
+  "counts": {
+    "added": 1,
+    "removed": 0,
+    "modified": 2,
+    "needsReview": 0
+  },
+  "state": "findings"
+}

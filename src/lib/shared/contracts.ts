@@ -72,3 +72,28 @@ export const RESULT_MESSAGES: Record<ResultState, string> = {
   incomplete: 'Analysis incomplete — some candidate findings could not be verified or the analysis did not finish fully.',
   none_verified: 'No findings could be verified.',
 };
+
+const documentSchema = z.object({
+  id: z.enum(['old', 'new']), filename: z.string(), format: z.enum(['txt', 'md', 'pdf']),
+  canonicalText: z.string(), codePointCount: z.number().int().nonnegative(),
+  lineStarts: z.array(z.number().int().nonnegative()),
+  pages: z.array(z.object({ page: z.number().int().positive(), start: z.number().int().nonnegative(), end: z.number().int().nonnegative() })),
+  limitations: z.array(z.string()),
+});
+const evidenceSchema = z.object({
+  documentId: z.enum(['old', 'new']), quote: z.string().min(1), start: z.number().int().nonnegative(), end: z.number().int().positive(),
+  startLine: z.number().int().positive(), endLine: z.number().int().positive(), page: z.number().int().positive().optional(),
+});
+const findingSchema = z.object({
+  id: z.string(), kind: candidateSchema.shape.kind, title: z.string(), changeDescription: z.string(),
+  oldEvidence: evidenceSchema.nullable(), newEvidence: evidenceSchema.nullable(),
+  interpretation: z.string(), suggestedAction: z.string(), uncertainty: z.string(),
+});
+export const comparisonResultSchema = z.object({
+  attemptId: z.string(), documents: z.object({ old: documentSchema, new: documentSchema }),
+  classified: z.array(findingSchema), needsReview: z.array(findingSchema), withheldCount: z.number().int().nonnegative().nullable(),
+  incomplete: z.boolean(), incompleteReasons: z.array(z.string()),
+  counts: z.object({ added: z.number().int().nonnegative(), removed: z.number().int().nonnegative(), modified: z.number().int().nonnegative(), needsReview: z.number().int().nonnegative() }),
+  state: z.enum(['identical', 'no_supported_changes', 'findings', 'needs_review', 'incomplete', 'none_verified']),
+});
+export const documentResponseSchema = z.object({ document: documentSchema });

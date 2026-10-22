@@ -12,7 +12,7 @@ export function parseCloudflareResponse(envelope: unknown): CandidateResponse {
     throw new ProofPathError('PROVIDER_RESPONSE_INVALID', 'The AI service did not return a successful analysis response.', 502);
   }
   const result = envelope.result;
-  if (!result || typeof result !== 'object' || !('choices' in result) || !Array.isArray(result.choices) || result.choices.length !== 1) {
+  if (!result || typeof result !== 'object' || !('model' in result) || result.model !== MODEL || !('choices' in result) || !Array.isArray(result.choices) || result.choices.length !== 1) {
     throw new ProofPathError('PROVIDER_RESPONSE_INVALID', 'The AI service response envelope was not supported.', 502);
   }
   const choice: unknown = result.choices[0];
