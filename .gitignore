@@ -1,0 +1,18 @@
+/devpost/learner-profile.md
+.env
+.env.*
+!.env.example
+
+# Next.js and local development
+node_modules/
+.next/
+out/
+.vercel/
+coverage/
+playwright-report/
+test-results/
+*.tsbuildinfo
+
+# Local secrets
+*.pem
+*.key

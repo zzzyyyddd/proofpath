@@ -1,0 +1,93 @@
+---
+doc: checklist
+status: draft
+---
+
+# ProofPath — Build Checklist
+
+Build mode: not chosen — ask learn or fast before implementation.
+
+Spec explicitly approved. Scope and PRD remain unchanged. This is the official 5-build order for review, not an implementation-success report. No slice or feasibility gate is complete yet.
+
+We'll build in slices: small working steps you can try. Each adds usable behavior, with mechanical verification and a Git checkpoint before proceeding. The first slice is the skill's critical-risk exception: runnable production-schema/evidence evaluation rather than speculative interface work.
+
+Prerequisites: usable writable Git repository (current .git is empty/read-only and Git reports no repository); safely configured Cloudflare credentials and confirmed Workers Free status; authenticated read-only access/account evidence for Vercel Hobby and its included firewall rule. Never request credentials in chat. Check ignored/tracked/staged private files before commits; stage only intended project changes. No live inference tests until zero-cost account configuration is established. Credentials belong in ignored environment configuration, not this checklist or source.
+
+Stop rule: an unrepairable failed gate requiring provider/model change, new service, architectural expansion, or scope reduction stops work for the learner's decision. No weakening fixtures, silent truncation, automatic retries, paid fallback, upgrades, or billing activation. Missing access is pending verification, never a pass.
+
+## Slices
+
+- [ ] **1. Run the real comparison kernel against controlled and maximum-size inputs**
+  Becomes usable: An explicit evaluation command processes controlled Old/New text through the complete production Qwen schema and deterministic verifier, producing inspectable checked results or truthful failures. A separate offline boundary command proves input counts, source locations, and serialized response limits without inference quota.
+  Why now: The kernel is the largest uncertainty. Prove response shape, semantic outcomes, evidence checks, maximum-context headroom, and the 1 MB Unicode result budget before surrounding a missing kernel with a polished interface. Bootstrap belongs inside this slice.
+  PRD ref: `prd.md > Classified Findings and Source Traceability`, `prd.md > Needs Review — Relationship Unresolved`, `prd.md > Partial Results, Never False Completeness`, `prd.md > Acceptance and Demonstration`
+  Spec ref: `spec.md > Stack`, `spec.md > Qwen Candidate Generator`, `spec.md > Deterministic Evidence Verifier`, `spec.md > Result Builder and Status Rules`, `spec.md > Verification Strategy and Acceptance Gates`, `spec.md > File Structure`
+  Build: Bootstrap the minimal approved Next.js/TypeScript project and exact dependency lockfile with the runnable evaluation commands; implement shared contracts, canonical TXT/MD extraction/counting, the complete candidate schema/prompt, server-only Cloudflare adapter, exact evidence/location verification, and result status/count rules. Add controlled synthetic fixtures and failure injection. Verify actual successful REST envelope/finish behavior without logging secrets or private content. Include explicit Added/Removed/Modified definitions and contrast optional-to-mandatory with a truly new video requirement. Bound the live evaluation run count and disable retries. Add maximum 30,000-code-point pairs, token-dense/Unicode/escape-heavy cases and realistic worst-case serialized documents, line maps, quotations, findings, filenames, metadata, and NDJSON terminal-event overhead. Never truncate or reduce limits to fit.
+  Verify (mechanical): Run strict TypeScript, deterministic schema/verifier/result/counting tests and 30,000/30,001 boundaries. Verify every returned quotation/location. Inject fabricated quotes, ambiguous occurrences, wrong-source/missing evidence, mixed/all-withheld candidates, invalid/fenced/extra-key/truncated responses, provider error/quota/timeout, and exact-identical inference bypass. Run the specified three-consecutive-run semantic gate for main changes/removal/equivalent requirements/ambiguity using actual Qwen only after free access is confirmed; record unsuccessful runs rather than hiding them. Verify full input context including complete prompt/schema and reserved output, not character/4 estimates. Measure UTF-8 bytes of actual JSON serialization for valid Unicode boundary results against 1 MB; a reproducible failure of the approved design requires discussion before further expansion. No recorded script success stands in for a live or full-size test.
+  Learner check: Run or inspect the evaluation report with me: confirm the three expected changes and unchanged rule, inspect a mapped quote, and see that a deliberately fabricated quotation is withheld. Review which checks passed mechanically, which called Qwen, and which remain blocked.
+  Commit: `Prove comparison kernel and input-boundary feasibility`
+
+- [ ] **2. Upload and validate real files on a public free deployment**
+  Becomes usable: A minimal upload workspace validates TXT, Markdown, and supported PDF files on the server and displays text/source locations or actionable errors; the deployed URL works independently of the laptop. A narrow probe validates the planned comparison transport without pretending to provide finished comparison UI.
+  Why now: PDF.js runtime behavior, payload/resources, public deployment, and actual Hobby throttling must be proven before expanding the interface. No Cloudflare AI calls occur in validation.
+  PRD ref: `prd.md > Upload Workspace`, `prd.md > Document Validation and Extraction Integrity`, `prd.md > Privacy and Data-Handling Statements`
+  Spec ref: `spec.md > Upload Panels and Validation Route`, `spec.md > PDF Extraction and Quality Gate`, `spec.md > Comparison Route and Orchestrator`, `spec.md > Public Endpoint Protection and Privacy`, `spec.md > Where It Runs and How Someone Tries It`
+  Build: Add original-byte validation, language checks/notices, PDF.js per-page extraction and conservative quality diagnostics, actual source maps, and the per-file validation endpoint. Build a minimal upload/error/source-preview surface in the approved theme. Deploy to existing/verified free Vercel Hobby and configure server secrets safely. Verify actual included comparison-only rate-rule availability, configurability, and terms in this account; configure six requests/minute/IP only for POST /api/compare. Use a non-inference transport/test path to verify matching and seventh-request rejection without exhausting inference quota; do not leave a production bypass. Test original-file re-upload and bounded multipart streaming on the deployed runtime, including limits/time/output envelopes.
+  Verify (mechanical): Run extraction and location tests on simple/multipage PDFs, image-only/scanned, malformed/encrypted, missing/partial text, suspicious reading order, and accepted residual-limitations cases. Test 2,000,000/2,000,001 bytes, 10/11 pages, 30,000/30,001 code points; invalid encodings/binary spoofing/empty text and accepted uncertain/mixed-language notices. Spy on provider adapter: zero calls for all validation outcomes. Build/start production successfully and repeat representative PDF/upload/transport tests on Vercel within confirmed free duration/memory/body limits. Check account firewall evidence and real rule behavior; static/sample paths and validation must remain outside the AI throttle. Record account verification separately from public documentation. If free throttling is unavailable, stop for an approved zero-cost alternative; do not silently adopt Turnstile or paid features.
+  Learner check: Open the signed-out public URL with your laptop not serving the app. Upload a valid PDF and inspect its page/text mapping; replace an invalid file while retaining its valid partner. Review the exact account/rule evidence together and identify any unsupported assumptions.
+  Commit: `Verify hosted uploads PDF extraction and free deployment controls`
+
+- [ ] **3. Compare uploaded documents and inspect actual evidence end to end**
+  Becomes usable: Valid uploads produce real live comparison results with truthful stages, separate counts, selectable findings, exact Old/New passages, and an in-app Source Context Viewer.
+  Why now: Critical gates have evidence; integrate the proven kernel into the core journey before adding secondary polish. This is the early product-feedback checkpoint.
+  PRD ref: `prd.md > The Core Journey`, `prd.md > Results Workspace and Evidence Inspector`, `prd.md > Source Context Viewer`, `prd.md > AI Interpretation and Suggested Action`, `prd.md > Partial Results, Never False Completeness`
+  Spec ref: `spec.md > Comparison Route and Orchestrator`, `spec.md > API Contracts`, `spec.md > Evidence Inspector and Source Context Viewer`, `spec.md > Result Builder and Status Rules`, `spec.md > Look and Feel`
+  Build: Integrate Compare multipart re-upload/revalidation/re-extraction, fixed attempt baseline, NDJSON real stage events, complete non-streamed Qwen schema checks, deterministic verification, result builder, approved summary copy, classified/Needs Review separation and withheld/incomplete notices. Add the Inspector and scrollable exact-source context with original wording, reliable locations, absent-side notices and separate interpretation/action. Stop before inference on revalidation failure. Retain no content beyond request/browser lifetime.
+  Verify (mechanical): Exercise real upload→comparison→finding→source-context flow with controlled fixtures. Validate identical/no-supported-change/unresolved-only/mixed/all-withheld/failure states and counts. Verify emitted stages correspond to completed real work and truncated/malformed streams fail explicitly. Verify quotes against the exact compare extraction, not earlier previews; source context shows actual surrounding text and closes back to the selected finding/list position. Run unit/integration/browser checks, production build, and a deployed representative live comparison within available free quota.
+  Learner check: Try the public core journey, select each changed requirement and inspect both sources. Open/close context and try mobile/keyboard navigation. Tell me what is confusing, visually weak, or different from the approved experience before the remaining work.
+  Commit: `Deliver live comparison with inspectable source evidence`
+
+- [ ] **4. Recover safely and explore a clearly labeled static sample**
+  Becomes usable: Retry, replacement, reset, refresh, and interrupted requests preserve or clear exactly the intended state. Judges can explicitly explore a static controlled sample during inference outages without confusing it with live analysis.
+  Why now: The core journey exists; harden its recovery behavior and outage demonstration without disguising real failures or adding storage.
+  PRD ref: `prd.md > Session-Only Workspace and Attempt Isolation`, `prd.md > Truthful Processing and Retry`, `prd.md > States and Boundaries`
+  Spec ref: `spec.md > Workspace Controller`, `spec.md > Static Sample Analysis`, `spec.md > Public Endpoint Protection and Privacy`, `spec.md > Important Failure Modes`
+  Build: Complete generation/revision guards, cancellation, duplicate prevention, new-attempt isolation, clear retry/replace/New Comparison controls, session notice, no-store behavior and accurate provider privacy messages. Add bundled synthetic sample documents/results with persistent static-not-live labeling, reused evidence/context views, isolated preview state, and return to the retained live workspace. Quota failure remains an explicit failure with an optional sample action; never auto-switch or merge.
+  Verify (mechanical): Inject delayed upload validation and comparison replies after replacement/reset/retry; verify no stale updates. Test interrupted streams, timeouts, quota/API failures, duplicate requests, refresh/close returning empty, replacement no auto-analysis, retry preserving valid files, and full reset. Validate static schema/quotes/locations and unchanged-rule omission. Assert sample exploration causes zero validation/inference calls, remains labeled through Inspector/context/mobile views, and preserves/restores live state. Audit client bundle/errors/logging/caching and ignored files for secrets/private document content.
+  Learner check: Force or simulate quota unavailability in the isolated test environment, open the labeled sample and inspect its evidence, then return to live uploads. Try retry/replace/reset and confirm the behavior matches your expectations.
+  Commit: `Add safe session recovery and labeled sample exploration`
+
+- [ ] **5. Verify the public proof of concept and finish usability polish**
+  Becomes usable: A polished public ProofPath URL and reproducible local setup demonstrate the complete approved workflow, with honest limitations and recorded verification evidence.
+  Why now: Refine the integrated journey with learner feedback and verify the deployed application instead of polishing unproven capabilities. Keep submission work ready without skipping final learner review.
+  PRD ref: `prd.md > Look and Feel`, `prd.md > Acceptance and Demonstration`, `prd.md > What We're Building`, `prd.md > Non-Goals`
+  Spec ref: `spec.md > Verification Strategy and Acceptance Gates`, `spec.md > Where It Runs and How Someone Tries It`, `spec.md > Important Failure Modes`, `spec.md > Look and Feel`
+  Build: Resolve agreed early-feedback refinements, finish responsive/accessibility/error copy and source-highlight clarity, write accurate README/setup/data-handling documentation, and record deployed verification/known limits without exposing credentials or private context. Keep live controls subject to free quotas and sample explicitly static. Prepare a short demo route using real uploads and evidence inspection; do not begin 6-ship or write the learner's submission.
+  Verify (mechanical): Run lint/typecheck/unit/integration/E2E/production build, then signed-out deployed smoke checks across TXT/MD/PDF, representative mobile/keyboard/reduced-motion flows, and real live versus static-sample distinction. Recheck any changed semantic prompt/schema against the specified live evaluation gate within free quota; do not rerun paid calls or weaken expectations to avoid a failure. Verify no silent truncation/false completeness, unchanged approved limits, real account protections, response budgets and no persistent content. Record unavailable tests as unverified. Confirm public URL operation with laptop off and final staged-diff privacy review before commit.
+  Learner check: Start the app or use the public URL and freely try the core flow, awkward inputs, source context, sample and resets. Report anything broken or confusing; after agreed revisions are verified and retried, explicitly confirm readiness to ship.
+  Commit: `Polish and verify the public ProofPath proof of concept`
+
+## Hands-on Checkpoints
+
+- [ ] Early technical feasibility report reviewed — after slice 1; learner can inspect real schema/semantic/evidence/boundary results and access blockers.
+- [ ] Public upload/runtime gate explored — after slice 2; learner verifies laptop-independent URL and account/rule evidence.
+- [ ] Early usable core journey explored — after slice 3; feedback can shape recovery/polish.
+- [ ] Final kick-the-tires exploration and feedback completed — after slice 5 and any agreed revisions.
+
+## Final Review
+
+- [ ] Final review complete — feedback resolved and learner explicitly confirms ready to ship.
+
+## Code Tour and App Map
+
+- [ ] Learning activity complete — trace one real finding from extraction through candidate validation, exact source matching, result state, and Inspector; connect to plan-first verification practice without a quiz.
+- [ ] Optional edit and transfer reflection addressed — offered/declined/already covered/not applicable as appropriate.
+- [ ] `devpost/app-map.html` generated from finished code, checked, and shown, including a project-grounded practice to reuse.
+
+Activity and evidence: Not performed yet; record actual paths/tests and learner participation after final revisions.
+Route and stops: Not performed yet; derive from finished application code.
+Edit outcome: Not offered yet.
+Reflection: Not offered yet; personal response belongs only in the ignored learner profile.
+Activity mode: Not selected; use one suitable focused activity grounded in the actual build.
+
+## Revisions
