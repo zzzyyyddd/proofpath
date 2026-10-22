@@ -8,3 +8,5 @@ import '../tests/unit/routes.test';
 import '../tests/unit/sample.test';
 import '../tests/unit/streams.test';
 import '../tests/unit/evaluation.test';
+import '../tests/unit/single-request.test';
+import '../tests/unit/maximum.test';

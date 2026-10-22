@@ -28,13 +28,13 @@ Expect four real stages with started/done events and a terminal `result` with st
 
 ## 2. First bounded live Qwen probe
 
-Preconditions: independently confirm the actual Cloudflare account is Workers Free, has remaining daily allowance, and no paid fallback/billing upgrade is enabled. Configure server-only values locally in ignored `.env.local`; never share the file or credentials. The live command requires `ANALYSIS_ENABLED=true` and `CLOUDFLARE_FREE_PLAN_CONFIRMED=true`. These are operator confirmations, not automatic verification of account billing status. Keep public live deployment disabled until its account/protection gates pass.
+Preconditions: independently confirm the actual Cloudflare account is Workers Free, has remaining daily allowance, and no paid fallback/billing upgrade is enabled. Configure server-only values locally in ignored `.env.local`; never share the file or credentials. The standalone live process requires `ANALYSIS_ENABLED=true` and `CLOUDFLARE_FREE_PLAN_CONFIRMED=true`; supply these only as one-command environment overrides, leaving application configuration disabled. These are operator confirmations, not automatic verification of account billing status. Keep public live deployment disabled until its account/protection gates pass.
 
 Run only this first probe initially; do not launch a loop or the whole suite:
 
 ```bash
 cd ~/proofpath
-node --env-file=.env.local --import tsx scripts/evaluate-model.ts --confirm-free-plan --max-calls=1 --fixture=main
+ANALYSIS_ENABLED=true CLOUDFLARE_FREE_PLAN_CONFIRMED=true node --env-file=.env.local --import tsx scripts/evaluate-model.ts --confirm-free-plan --max-calls=1 --fixture=main
 ```
 
 Maximum: one inference request, 4,096 output tokens, 60-second provider timeout, zero automatic retries, no fallback. The complete production candidate schema, native REST response parser, deterministic quotation/location verifier, and independent semantic oracle are used. Expected: one Added video finding, two Modified findings (deadline/team size), no unchanged repository finding, and no withheld or unresolved items. The oracle requires the fixture's exact minimal quotations; different quote boundaries fail conservatively and require inspection, never automatic expectation changes.
@@ -63,3 +63,91 @@ The current harness does not measure that complete tokenizer/context gate. Do no
 ## 5. Real non-identical browser comparison
 
 Once live configuration and the first controlled probe are reviewed, deliberately submit the old/new sample TXT files once through the actual upload UI. This is a separate inference request. Inspect all three findings and source context against the uploaded files; ensure the unchanged repository rule is omitted and the result is not labeled static sample. Record actual output rather than substituting the curated sample if analysis fails. Restore `ANALYSIS_ENABLED=false` after local evaluation and restart the server to apply configuration changes. No public live rollout before Vercel free-protection verification.
+
+## Account verification stop — 2026-10-23
+
+Actual account plan is unverified: no connected Cloudflare account tool and no local credentials/configuration are available to the agent. No inference is authorized by a local confirmation flag alone. The main probe now reads and validates the actual `public/samples/old-rules.txt` and `public/samples/new-rules.txt` files, checks they match the controlled semantic fixture before inference, and has a one-fetch guard with HTTP redirects disabled. It never changes account plans or activates a public application.
+
+Manual verification, without running a model:
+
+1. Sign in to https://dash.cloudflare.com/ and select the same account intended for the server-side token. Do not share its ID/token here.
+2. Open account Billing (use dashboard search if its navigation differs), then the subscriptions/active-products view. Inspect the **Workers** subscription specifically. A Free website/domain plan is not proof of Workers Free. Confirm Workers Free and no Workers Paid subscription/trial for this account. Do not upgrade, subscribe, activate billing, or purchase credits.
+3. Open Workers & Pages and Workers AI. Confirm the plan agrees with Workers Free. On Workers AI usage, inspect today's neuron consumption and remaining free allocation; do not click Run in the playground for this check. Cloudflare documents a 10,000-neuron daily free allocation. A paid account can also show this allocation, so the usage counter alone is insufficient.
+4. Check that the Qwen model `@cf/qwen/qwen3-30b-a3b-fp8` is accessible without an upgrade/paywall. Inspect its model page/dashboard listing without inference. Stop if it requires Workers Paid, prepaid credits, or an upgrade.
+5. This application uses the direct Cloudflare REST endpoint, not AI Gateway. Do not add Gateway unified billing, prepaid credits, paid fallback, another provider, or a new service. If the account is paid or its billing state is ambiguous, stop rather than assuming a remaining allowance prevents charges. Budget alerts alone are not a spending cap.
+6. Report only: Workers plan label, whether Workers Paid/trial is present, approximate neurons used/remaining today, and whether Qwen asks for an upgrade. Do not send tokens, account IDs, payment details, or unredacted billing screenshots.
+
+Keep `ANALYSIS_ENABLED=false` in the application while checking. After these facts are reviewed, configure credentials privately and prepare a one-off standalone-process evaluation; do not activate the public route. The proposed initial maximum remains one inference request in total, not one per retry. A failure does not authorize rerunning the command.
+
+References: [Workers AI pricing](https://developers.cloudflare.com/workers-ai/platform/pricing/), [Qwen model](https://developers.cloudflare.com/workers-ai/models/qwen3-30b-a3b-fp8/). Public documentation cannot verify the learner's account subscription.
+
+
+## Ready for a manual one-shot run — learner plan evidence received
+
+Learner confirmed Workers Free Active, Workers Paid not subscribed, no payment method, approximately 32.5/10,000 neurons used. These replace the earlier missing manual account evidence; agent credentials are still unavailable. No live request has run here.
+
+In normal WSL, preserve any existing `.env.local`. If absent, create a private copy and edit locally:
+
+```bash
+cd ~/proofpath
+test -f .env.local || (umask 077; cp .env.example .env.local)
+chmod 600 .env.local
+nano .env.local
+```
+
+Set the Cloudflare account ID and API token privately. Keep `ANALYSIS_ENABLED=false`; do not export an enabled value to the application shell. The public application must remain disabled. Do not paste this file or credentials into chat.
+
+Verify configuration without revealing values or contacting Cloudflare:
+
+```bash
+node --env-file=.env.local --input-type=module <<'JS'
+const checks = {
+  accountIdConfigured: /^[a-f\d]{32}$/i.test(process.env.CLOUDFLARE_ACCOUNT_ID ?? ''),
+  tokenConfigured: Boolean(process.env.CLOUDFLARE_API_TOKEN?.trim()),
+  applicationLiveDisabled: process.env.ANALYSIS_ENABLED === 'false',
+};
+console.log(checks);
+if (Object.values(checks).some(value => !value)) process.exitCode = 1;
+JS
+```
+
+Only if all checks are true, execute the single initial probe command in section 2 **once**. Flags are process-scoped and do not modify `.env.local`, a running app, or deployment settings. Do not run a browser comparison during this one-request evaluation. If the report fails, stop and share only the safe structured report; no rerun is authorized. Expected schema/quote/semantic success requires actual production response validity, all required source matches, and the exact three fixture classifications. It is not universal accuracy.
+
+Record HTTP status and request count from the report. Neuron consumption is reported as unavailable when not exposed by the harness; compare the actual dashboard reading before/after, with no concurrent requests and allowance for dashboard lag, rather than estimating from token counts or earlier tests. An unchanged/rounded dashboard reading does not prove zero consumption.
+
+## Verified initial live result — learner report
+
+Probe #1: HTTP 200; exactly 1 request; production JSON schema PASS; deterministic source quotes PASS; controlled semantics PASS (1 Added video, 2 Modified deadline/team size, 0 Removed, 0 Needs Review). Workers Free confirmed, Workers Paid not subscribed, no payment method. Dashboard approximately 32.50 → 59.26 neurons: observed difference 26.76 neurons, not an exact per-request measurement. Public live analysis remains disabled. This does not complete repeatability or maximum-context testing. No additional requests approved by this record.
+
+## Proposed next live sequence — awaiting explicit approval
+
+No requests below have been run. Proposed ceiling: **16 additional requests**, sequential, never automatic. Each invocation retains `--confirm-free-plan --max-calls=1`, command-scoped enable flags only, and a single `--fixture` selector. No application/public enablement. Check remaining free allocation before each invocation; stop at the first failure, incomplete result, timeout, non-200 response, schema error, evidence failure, or semantic mismatch. Do not retry a failed run or replace it with a later lucky pass. No redirects, alternate provider or paid fallback.
+
+| Order | Selector | Independent requests | Required outcome |
+| --- | --- | ---: | --- |
+| 1–3 | `--fixture=main` | 3 | Modified deadline; Modified team size; Added new mandatory video; unchanged repository omitted |
+| 4–6 | `--fixture=optional` | 3 | Existing optional video becoming required is Modified |
+| 7–9 | `--fixture=removal` | 3 | One Removed requirement; absent New quote is null |
+| 10–12 | `--fixture=equivalent` | 3 | No findings for equivalent requirement wording |
+| 13–15 | `--fixture=ambiguous` | 3 | Needs Review, both quotes located; no forced relationship |
+| 16 | `--fixture=maximum` | 1, conditional | Same three classifications at offsets 0, 15,000 and 29,900; no missing late change or incomplete result |
+
+The three fresh main runs avoid assuming the earlier report contains the newly recorded settings/fingerprints. Probe #1 remains valid single-pass evidence. Compare model ID, prompt/schema/message/document SHA-256 fingerprints and settings across repeated runs of the same fixture; any changed prompt/schema requires a separately agreed affected rerun budget. Never estimate future neuron costs from the observed dashboard difference of 26.76.
+
+Command template, execute only after explicit approval and only once for each authorized position in the table:
+
+```bash
+ANALYSIS_ENABLED=true CLOUDFLARE_FREE_PLAN_CONFIRMED=true \
+node --env-file=.env.local --import tsx scripts/evaluate-model.ts \
+  --confirm-free-plan --max-calls=1 --fixture=main
+```
+
+Replace only the fixture selector for the relevant authorized position. No loop is supplied. Keep the application `.env.local` value `ANALYSIS_ENABLED=false`; the overrides affect the standalone process only. Each report includes elapsed time, hashes, counts and actual serialized terminal-response bytes, but not credentials or raw model output. Reports retain failed outcomes. The CLI rejects contradictory/duplicate budget arguments.
+
+### Maximum fixture and precondition
+
+Files: `tests/fixtures/maximum/old-rules.txt` and `tests/fixtures/maximum/new-rules.txt`. Both are original synthetic English text, exactly 30,000 code points/bytes each, 60,000 total. The Old/New deadline is at offset 0, team limit at 15,000, and new video at 29,900. All surrounding background is synthetic. Regenerate offline with `node --import tsx scripts/prepare-maximum-fixture.ts`. Source inputs are not truncated or their limits reduced.
+
+Offline checks validate full file extraction, expected exact evidence positions, production result schema/client stream parsing, and the complete synthetic stream budget (68,514 bytes). These are not model-context tests. Before request 16, accurate tokenization must account for the full message payload, system prompt, production schema, model/template overhead and 4,096-token output reserve within the documented context. This preflight is NOT VERIFIED and is a blocker to request 16; do not use character/4 as proof. If accurate local preflight cannot yet be established, stop after the approved short-fixture subset and return for a decision rather than running the maximum request speculatively.
+
+A normal-English boundary pass would still not establish token-dense Unicode/all-input context capacity. No token-dense live request is included in this ceiling; prepare that separately with an explicit approved budget. A confirmed systematic capacity failure requires learner review, never smaller silent input limits or a provider change.

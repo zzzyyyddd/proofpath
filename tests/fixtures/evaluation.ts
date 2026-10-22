@@ -1,7 +1,9 @@
 import type { CandidateResponse } from '../../src/lib/shared/contracts';
 import { candidate, mainCandidates, oldRules, newRules } from './rules';
+import { maximumFixture } from './maximum-context';
 
 export const semanticFixtures = {
+  maximum: maximumFixture,
   main: { old: oldRules, new: newRules, expected: mainCandidates },
   removal: {
     old: 'The repository must be public.\nA presentation slide deck is required.',
