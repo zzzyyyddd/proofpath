@@ -88,3 +88,47 @@ test('full compare stream with maximum approved Unicode inputs remains within ac
   const terminal = JSON.parse(raw.trim().split('\n').at(-1)!);
   assert.equal(terminal.type, 'result'); assert.equal(terminal.result.documents.old.canonicalText, text);
 });
+
+test('browser-origin identical uploads pass the real route and client parser when Next uses its bind hostname internally', async () => {
+  const { consumeComparisonStream, STAGES } = await import('../../src/lib/client/requests');
+  const { readFileSync } = await import('node:fs');
+  const source = readFileSync('public/samples/old-rules.txt');
+  const originalFetch = globalThis.fetch; let calls = 0;
+  globalThis.fetch = async () => { calls++; throw new Error('Identical uploads must not call Cloudflare'); };
+  try {
+    for (const attemptId of ['browser-identical-first', 'browser-identical-retry']) {
+      const form = new FormData();
+      for (const label of ['old', 'new']) form.append(label, new File([source], 'old-rules.txt'));
+      form.append('attemptId', attemptId);
+      // The public Host/Origin agree; the dev server may reconstruct URL using its bind host.
+      const response = await compare(new Request('http://0.0.0.0:3000/api/compare', {
+        method: 'POST', headers: { host: 'localhost:3000', origin: 'http://localhost:3000' }, body: form,
+      }));
+      assert.equal(response.status, 200, 'A same-origin browser request must reach the comparison stream');
+      const seen: string[] = [];
+      const result = await consumeComparisonStream(response, attemptId, {
+        isCurrent: () => true, onStage: (name, status) => seen.push(`${name}:${status}`),
+      });
+      assert.equal(result?.state, 'identical'); assert.equal(result?.incomplete, false);
+      assert.deepEqual(result?.counts, { added: 0, removed: 0, modified: 0, needsReview: 0 });
+      assert.equal(result?.documents.old.canonicalText, source.toString());
+      assert.equal(result?.documents.new.canonicalText, source.toString());
+      assert.equal(result?.classified.length, 0); assert.equal(result?.needsReview.length, 0);
+      assert.deepEqual(seen, STAGES.flatMap(name => [`${name}:started`, `${name}:done`]));
+    }
+    assert.equal(calls, 0);
+  } finally { globalThis.fetch = originalFetch; }
+});
+
+test('comparison origin guard rejects foreign, opaque and malformed browser origins without inference', async () => {
+  for (const origin of ['https://unrelated.example', 'null', 'http://localhost:3000/path', 'http://localhost:3000.evil.example']) {
+    const form = new FormData();
+    form.append('old', new File([oldRules], 'old.txt')); form.append('new', new File([oldRules], 'new.txt'));
+    form.append('attemptId', 'blocked-origin');
+    const response = await compare(new Request('http://0.0.0.0:3000/api/compare', {
+      method: 'POST', headers: { host: 'localhost:3000', origin, 'x-forwarded-host': 'unrelated.example' }, body: form,
+    }));
+    assert.equal(response.status, 403);
+    assert.equal((await response.json()).error.code, 'INVALID_ORIGIN');
+  }
+});

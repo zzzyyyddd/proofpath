@@ -12,7 +12,22 @@ export async function POST(request: Request) {
   let form: FormData;
   try {
     const origin = request.headers.get('origin');
-    if (origin && origin !== new URL(request.url).origin) throw new ProofPathError('INVALID_ORIGIN', 'Use the comparison form on this site.', 403);
+    const requestUrl = new URL(request.url);
+    // Next may reconstruct request.url with its bind hostname (0.0.0.0),
+    // while the browser addresses localhost. Host is the request authority;
+    // never substitute an arbitrary X-Forwarded-Host for this browser check.
+    let sameOrigin = !origin;
+    if (origin) {
+      try {
+        const originUrl = new URL(origin);
+        const authority = request.headers.get('host') ?? requestUrl.host;
+        const publicUrl = new URL(`${requestUrl.protocol}//${authority}`);
+        sameOrigin = origin === originUrl.origin && !publicUrl.username && !publicUrl.password
+          && publicUrl.pathname === '/' && !publicUrl.search && !publicUrl.hash
+          && publicUrl.origin === originUrl.origin;
+      } catch { sameOrigin = false; }
+    }
+    if (!sameOrigin) throw new ProofPathError('INVALID_ORIGIN', 'Use the comparison form on this site.', 403);
     form = await boundedMultipart(request);
     if ([...form.keys()].some(key => !['old', 'new', 'attemptId'].includes(key))) throw new ProofPathError('INVALID_REQUEST', 'Unexpected comparison fields.', 400);
     requireFile(form, 'old'); requireFile(form, 'new');
