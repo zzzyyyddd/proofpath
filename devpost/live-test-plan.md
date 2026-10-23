@@ -151,3 +151,19 @@ Files: `tests/fixtures/maximum/old-rules.txt` and `tests/fixtures/maximum/new-ru
 Offline checks validate full file extraction, expected exact evidence positions, production result schema/client stream parsing, and the complete synthetic stream budget (68,514 bytes). These are not model-context tests. Before request 16, accurate tokenization must account for the full message payload, system prompt, production schema, model/template overhead and 4,096-token output reserve within the documented context. This preflight is NOT VERIFIED and is a blocker to request 16; do not use character/4 as proof. If accurate local preflight cannot yet be established, stop after the approved short-fixture subset and return for a decision rather than running the maximum request speculatively.
 
 A normal-English boundary pass would still not establish token-dense Unicode/all-input context capacity. No token-dense live request is included in this ceiling; prepare that separately with an explicit approved budget. A confirmed systematic capacity failure requires learner review, never smaller silent input limits or a provider change.
+
+## Next requested preparation: optional-to-mandatory, one request only
+
+The learner selected `optional` as the next proposed bounded semantic check, superseding `main` as the next selector in the earlier proposed order. No additional live budget is approved by preparation; do not execute yet. Exact command for later explicit authorization:
+
+```bash
+ANALYSIS_ENABLED=true CLOUDFLARE_FREE_PLAN_CONFIRMED=true \
+node --env-file=.env.local --import tsx scripts/evaluate-model.ts \
+  --confirm-free-plan --max-calls=1 --fixture=optional
+```
+
+Expected: HTTP 200, exactly one network call, schema PASS, quotation/source-location verification PASS, semantic fixture PASS; counts Added 0, Removed 0, Modified 1, Needs Review 0, no withheld candidates or incomplete result. Old source is exactly `A demo video is optional.` (25 characters); New source is exactly `A demo video is required.` (25 characters). Both quotes must match those complete sentences with their source locations. Added or Removed is a failed classification. One pass is not the three-run repeatability gate. Neurons remain unavailable unless measured independently; do not estimate consumption. Any failure stops evaluation with no retry/redirect/fallback.
+
+The two environment overrides apply only to the standalone probe process; the application's `ANALYSIS_ENABLED=false` remains unchanged. No deploy or public activation.
+
+Maximum fixtures were regenerated to replace space padding with neutral punctuation, eliminating trailing-whitespace warnings without changing 30,000 characters per file or semantic locations. Their document/message hashes necessarily change; no prior maximum live result exists to invalidate. Production prompt/schema and small semantic fixtures are unchanged.

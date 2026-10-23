@@ -2,9 +2,10 @@ import { mainCandidates } from './rules';
 
 // Original synthetic English background, not copied rules or user documents.
 // Pad fixture construction only; uploaded inputs are never clipped by the app.
+// Neutral punctuation fills the remainder without trailing spaces or moving rules.
 function background(length: number): string {
   const sentence = 'Research notes describe the project background and provide general context.\n';
-  return sentence.repeat(Math.floor(length / sentence.length)).padEnd(length, ' ');
+  return sentence.repeat(Math.floor(length / sentence.length)).padEnd(length, '.');
 }
 function section(quote: string, offset: number): string {
   return background(offset) + quote + '\n' + background(10_000 - offset - quote.length - 1);

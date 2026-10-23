@@ -15,12 +15,15 @@ test('maximum English TXT pair preserves all 60,000 characters and exact start/m
   for (const id of ['old', 'new'] as const) {
     assert.equal(docs[id].codePointCount, 30_000);
     assert.equal(docs[id].canonicalText, maximumFixture[id]);
+    assert.doesNotMatch(docs[id].canonicalText, /[\t ]+$/m, 'Generated source must not have trailing whitespace');
+    assert.doesNotMatch(docs[id].canonicalText, /\n\n$/, 'Generated source must not have blank lines at EOF');
     assert.ok(Buffer.byteLength(docs[id].canonicalText) <= LIMITS.fileBytes);
   }
   const result = buildResult('offline-maximum', docs, { candidates: maximumFixture.expected, analysis_complete: true });
   assert.deepEqual(result.counts, { added: 1, removed: 0, modified: 2, needsReview: 0 });
   assert.equal(result.incomplete, false);
   assert.deepEqual(result.classified.map(f => f.newEvidence?.start), [0, 15_000, 29_900]);
+  assert.deepEqual(result.classified.map(f => f.oldEvidence?.start ?? null), [0, 15_000, null]);
   const events = STAGES.flatMap(name => ['started', 'done'].map(status => ({ type: 'stage', attemptId: result.attemptId, name, status })));
   const stream = events.map(event => JSON.stringify(event) + '\n').join('')
     + serializeWithinBudget({ type: 'result', attemptId: result.attemptId, result }) + '\n';

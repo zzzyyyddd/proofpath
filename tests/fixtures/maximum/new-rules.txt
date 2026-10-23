@@ -130,7 +130,7 @@ Research notes describe the project background and provide general context.
 Research notes describe the project background and provide general context.
 Research notes describe the project background and provide general context.
 Research notes describe the project background and provide general context.
-    Research notes describe the project background and provide general context.
+....Research notes describe the project background and provide general context.
 Research notes describe the project background and provide general context.
 Research notes describe the project background and provide general context.
 Research notes describe the project background and provide general context.
@@ -195,7 +195,7 @@ Research notes describe the project background and provide general context.
 Research notes describe the project background and provide general context.
 Research notes describe the project background and provide general context.
 Research notes describe the project background and provide general context.
-                                                            Teams may have up to three members.
+............................................................Teams may have up to three members.
 Research notes describe the project background and provide general context.
 Research notes describe the project background and provide general context.
 Research notes describe the project background and provide general context.
@@ -261,7 +261,7 @@ Research notes describe the project background and provide general context.
 Research notes describe the project background and provide general context.
 Research notes describe the project background and provide general context.
 Research notes describe the project background and provide general context.
-                        Research notes describe the project background and provide general context.
+........................Research notes describe the project background and provide general context.
 Research notes describe the project background and provide general context.
 Research notes describe the project background and provide general context.
 Research notes describe the project background and provide general context.
@@ -391,5 +391,5 @@ Research notes describe the project background and provide general context.
 Research notes describe the project background and provide general context.
 Research notes describe the project background and provide general context.
 Research notes describe the project background and provide general context.
-                    A demo video is required.
-                                                                          
+....................A demo video is required.
+..........................................................................
