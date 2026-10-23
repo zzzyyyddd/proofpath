@@ -35,6 +35,7 @@ test('public rate-limit check uses configured host and platform IP without forwa
   let checks = 0;
   await enforceComparisonRateLimit(incoming, async (id, options) => {
     checks++;
+    assert.equal(id, 'rule_proofpath_compare_B67HTY');
     assert.equal(id, COMPARISON_RATE_LIMIT_ID); assert.equal(options?.timeout, 2_000);
     assert.equal(new URL(options!.request!.url).host, 'proofpath-ten.vercel.app');
     assert.deepEqual([...options!.request!.headers.keys()].sort(), ['host', 'x-forwarded-for', 'x-real-ip']);
@@ -100,7 +101,13 @@ test('rate-limited comparison returns 429 and Retry-After without inference', ()
 test('protected route and real client parser deliver source-checked provider findings after exactly one model request', () => production(async () => {
   let checks = 0, inference = 0;
   globalThis.fetch = async (url, options) => {
-    if (String(url).includes('/.well-known/vercel/rate-limit-api/')) { checks++; return new Response(null, { status: 204 }); }
+    if (String(url).includes('/.well-known/vercel/rate-limit-api/')) {
+      checks++;
+      assert.equal(String(url), 'https://proofpath-ten.vercel.app/.well-known/vercel/rate-limit-api/rule_proofpath_compare_B67HTY');
+      assert.equal(options?.method, 'GET');
+      assert.equal(new Headers(options?.headers).get('x-vercel-rate-limit-api'), 'rule_proofpath_compare_B67HTY');
+      return new Response(null, { status: 204 });
+    }
     inference++;
     assert.ok(String(url).startsWith('https://api.cloudflare.com/'));
     assert.ok(String(url).endsWith('/' + MODEL)); assert.equal(options?.redirect, 'error');

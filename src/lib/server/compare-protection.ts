@@ -2,7 +2,9 @@ import { isIP } from 'node:net';
 import { checkRateLimit } from '@vercel/firewall';
 import { ProofPathError } from '../shared/errors';
 
-export const COMPARISON_RATE_LIMIT_ID = 'proofpath-compare';
+// Configure the rule's @vercel/firewall "Rate limit ID" to this exact value.
+// A display name or WAF resource ID does not create that SDK condition itself.
+export const COMPARISON_RATE_LIMIT_ID = 'rule_proofpath_compare_B67HTY';
 
 // Counters live in Vercel's regional firewall, never in this function instance.
 // A missing rule or failed check must not silently enable public inference.
