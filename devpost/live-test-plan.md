@@ -201,3 +201,33 @@ Expected report: HTTP 200; exactly one network call; schema/quote/semantic PASS;
 ## Test #3 interruption — live evaluation paused
 
 Learner reported removal FAILED / INCONCLUSIVE: HTTP null, local fetch count 1, duration 60,006 ms, ANALYSIS_INTERRUPTED, source lengths 69/30. Schema, quotations and semantic classifications NOT EVALUATED. No semantic failure or pass inferred. Neuron consumption and remote completion unknown. Full hashes, timeout-layer audit, reasoning/sampling evidence and proposed single-request diagnostic are in [timeout investigation](timeout-investigation.md). The failed attempt remains in the record; earlier proposed repeatability sequence must not continue automatically. No further live request or parameter/timeout change authorized. Public application remains disabled.
+
+## Removal diagnostic retest PASS; equivalent test prepared
+
+Learner reports successful removal retest at checkpoint 420b5ef: HTTP 200, one local fetch invocation, duration 5,270 ms; schema, exact source quotation verification and semantic classification PASS; counts Added 0, Removed 1, Modified 0, Needs Review 0. Provider timeout unchanged at 60,000 ms, abort signal false, response headers received true. Neuron consumption not directly measured. The earlier 60,006 ms interruption remains separately recorded as FAILED / INCONCLUSIVE, with schema/quotes/semantics NOT EVALUATED. This retest does not resolve the original upstream-delay cause or complete repeatability.
+
+Next proposed fixture is `equivalent`:
+
+- Old: `Teams may have no more than three members.`
+- New: `The maximum team size is three members.`
+
+These are non-identical texts expressing the same maximum of three team members. Exact expected model result: `candidates: []`, `analysis_complete: true`. Final counts Added 0, Removed 0, Modified 0, Needs Review 0; withheld count 0; incomplete false; result state no_supported_changes. Do not invent findings or quotations. This is not the identical-text bypass: the supplied texts differ and a live model request is needed to evaluate semantic equivalence. Zero candidates makes source quotation checking vacuous, not proof of source completeness or model correctness beyond this controlled fixture.
+
+Prepared single-request command for normal WSL; no inference performed during preparation:
+
+```bash
+cd ~/proofpath
+ANALYSIS_ENABLED=true CLOUDFLARE_FREE_PLAN_CONFIRMED=true \
+node --env-file=.env.local --import tsx scripts/evaluate-model.ts \
+  --confirm-free-plan --max-calls=1 --fixture=equivalent
+```
+
+Expected report: HTTP 200, one local fetch invocation, schema PASS, semantic fixture PASS, zero category counts and no incomplete result. There are no candidate quotes to verify. Any returned candidate, incomplete result, API/schema failure or interruption fails this bounded check and stops further tests; no automatic retry or rerun. The environment overrides affect the standalone process only. Keep public application ANALYSIS_ENABLED=false, Workers Free, no redirects/alternate provider/paid fallback. No deployment, billing change or payment method.
+
+## Equivalent live fixture — semantic FAIL
+
+Learner report at checkpoint 420b5ef: HTTP 200, exactly one local fetch invocation, duration 15,756 ms; schema/source-quote checks PASS; semantic classification FAIL with Added 1, Removed 1, Modified 0, Needs Review 0 instead of zero findings. Failure FIXTURE_ASSERTION_FAILED; model @cf/qwen/qwen3-30b-a3b-fp8, temperature 0, no interruption. This is a genuine classification failure, independent of the prior timeout. Raw candidate details beyond the reported counts are unavailable; do not invent them. No exact neuron measurement reported. Prior failed and successful observations remain in the record. Live semantic validation is paused for the mitigation review; no automatic retry.
+
+## Semantic mitigation revision — live approval required
+
+Prompt-only alignment mitigation and offline regressions are documented in [semantic investigation](semantic-investigation.md). Revised prompt SHA-256 276e9cf46f2bddb81b89c53e478af300a610ffd9567800627831192e1a50ea8b; schema/model/parameters unchanged. All 72 offline tests and build checks PASS, but revised live semantics NOT VERIFIED. Earlier passes apply to the previous prompt; the equivalent failure remains a genuine failed observation. Proposed next budget: original equivalent fixture once, then only with explicit approval up to six further single-call regression fixtures (maximum seven new requests total). No live inference currently authorized/executed. Stop on first failure; no retries, redirects, provider fallback or public enablement. Full repeatability/context and ambiguity gates remain pending.

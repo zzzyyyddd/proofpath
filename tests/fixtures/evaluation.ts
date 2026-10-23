@@ -14,6 +14,20 @@ export const semanticFixtures = {
     old: 'Teams may have no more than three members.',
     new: 'The maximum team size is three members.', expected: [],
   },
+  equivalentrepository: {
+    old: 'Source code must be publicly accessible.',
+    new: 'The source code must be available to the public.', expected: [],
+  },
+  teamchange: {
+    old: 'Teams may have no more than three members.',
+    new: 'The maximum team size is five members.',
+    expected: [candidate({ kind: 'modified', old_quote: 'Teams may have no more than three members.', new_quote: 'The maximum team size is five members.' })],
+  },
+  boundchange: {
+    old: 'Teams must have at least three members.',
+    new: 'Teams may have no more than three members.',
+    expected: [candidate({ kind: 'modified', old_quote: 'Teams must have at least three members.', new_quote: 'Teams may have no more than three members.' })],
+  },
   ambiguous: {
     old: 'Student track: teams may include five members.',
     new: 'Open track: teams may include three members. The relationship to other tracks is not specified.',
