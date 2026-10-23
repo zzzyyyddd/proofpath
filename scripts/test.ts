@@ -12,3 +12,5 @@ import '../tests/unit/single-request.test';
 import '../tests/unit/maximum.test';
 import '../tests/unit/provider-timeouts.test';
 import '../tests/unit/semantic-regressions.test';
+import '../tests/unit/semantic-safety.test';
+import '../tests/unit/semantic-safety-route.test';

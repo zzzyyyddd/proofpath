@@ -11,6 +11,7 @@ export function buildResult(attemptId: string, documents: { old: ExtractedDocume
   const parsed = candidateResponseSchema.safeParse(input);
   if (!parsed.success) throw new ProofPathError('INVALID_MODEL_RESPONSE', 'The AI response did not match the required structure. No findings were presented as verified.', 502);
   const seen = new Set<string>();
+  const visibleReviews = new Set<string>();
   for (const [index, candidate] of parsed.data.candidates.entries()) {
     const key = JSON.stringify([candidate.kind, candidate.old_quote, candidate.new_quote]);
     if (seen.has(key)) continue;
@@ -19,6 +20,12 @@ export function buildResult(attemptId: string, documents: { old: ExtractedDocume
     if (checked.status === 'withheld') { result.withheldCount!++; continue; }
     if (checked.status === 'unchanged') continue;
     if (checked.finding.kind === 'needs_review') {
+      if (candidate.kind !== 'needs_review') {
+        // Only merge safety-gate reroutes of the same whole-clause pair.
+        const reviewKey = JSON.stringify([checked.finding.oldEvidence, checked.finding.newEvidence]);
+        if (visibleReviews.has(reviewKey)) continue;
+        visibleReviews.add(reviewKey);
+      }
       result.needsReview.push(checked.finding); result.counts.needsReview++;
     } else {
       result.classified.push(checked.finding); result.counts[checked.finding.kind]++;

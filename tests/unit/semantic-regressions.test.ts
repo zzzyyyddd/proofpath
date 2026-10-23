@@ -19,8 +19,10 @@ for (const name of ['equivalent', 'equivalentrepository'] as const) {
     assert.equal(matchesSemanticExpectation({ candidates: [], analysis_complete: true }, []), true);
     const docs = { old: makeDocument('old', 'old.txt', fixture.old), new: makeDocument('new', 'new.txt', fixture.new) };
     const result = buildResult('known-semantic-limit', docs, split);
-    // Honest limitation: exact source validation is not a semantic verifier.
-    assert.deepEqual(result.counts, { added: 1, removed: 1, modified: 0, needsReview: 0 });
+    // The limited grammar reroutes recognized counterparts, not arbitrary prose.
+    assert.deepEqual(result.counts, name === 'equivalent'
+      ? { added: 0, removed: 0, modified: 0, needsReview: 1 }
+      : { added: 1, removed: 1, modified: 0, needsReview: 0 });
     for (const finding of result.classified) for (const evidence of [finding.oldEvidence, finding.newEvidence]) {
       if (evidence) assert.equal(docs[evidence.documentId].canonicalText.slice(evidence.start, evidence.end), evidence.quote);
     }

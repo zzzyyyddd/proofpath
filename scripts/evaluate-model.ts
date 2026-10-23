@@ -20,6 +20,8 @@ const report = {
   neuronsConsumed: null, neuronUsageNote: 'Unavailable in this probe; check actual Workers AI usage before/after. No estimate is substituted.',
   schemaValidity: 'not evaluated', quoteVerification: 'not evaluated', semanticClassification: 'not evaluated',
   counts: null as unknown, result: 'failed or not run', failureCode: null as string | null,
+  rawModelCounts: null as unknown,
+  countMeaning: 'counts are displayed findings after safety checks; rawModelCounts are unverified model assignments. Semantic evaluation uses raw output.',
   repeatabilityGate: 'NOT COMPLETE', maximumContextGate: 'NOT RUN',
   fingerprints: null as unknown, extractedCharacters: null as unknown,
   responseBytes: null as number | null, durationMs: null as number | null,
@@ -50,6 +52,12 @@ async function main() {
     oldText: sha256(docs.old.canonicalText), newText: sha256(docs.new.canonicalText), messages: sha256(JSON.stringify(makeMessages(docs))) };
   const response = await generateCandidates(docs, { fetcher: request.fetcher });
   report.schemaValidity = 'passed';
+  report.rawModelCounts = {
+    added: response.candidates.filter(c => c.kind === 'added').length,
+    removed: response.candidates.filter(c => c.kind === 'removed').length,
+    modified: response.candidates.filter(c => c.kind === 'modified').length,
+    needsReview: response.candidates.filter(c => c.kind === 'needs_review').length,
+  };
   const result = buildResult('live-bounded-probe', docs, response);
   report.quoteVerification = result.incomplete ? 'failed or incomplete' : 'passed for all returned findings';
   report.counts = result.counts;
