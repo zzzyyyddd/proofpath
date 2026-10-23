@@ -6,7 +6,7 @@ Evidence-first comparison of two versions of hackathon rules. Built from the app
 
 The application now includes TXT/Markdown/PDF server validation, original-file re-extraction during Compare, strict candidate contracts, exact evidence locations, truthful stage streaming, classified/Needs Review/withheld states, a responsive Evidence Inspector and Source Context Viewer, and an explicitly labeled static sample. Retry, replacement, reset and refresh are session-only. These paths have offline route/unit checks; browser checks and public deployment are separate gates.
 
-Live Qwen has **failed semantic-equivalence checks**, including after prompt mitigation. The conservative safety gate handles only recognized clauses; general semantic reliability remains blocked. Public AI stays disabled. Maximum token/context capacity, Vercel Hobby account/rate-limit availability, and deployed PDF runtime behavior remain **unverified**. See the [prioritized deployment audit](devpost/deployment-audit.md) for the sample-only release checklist and approval-required commands. No public URL is claimed yet. The static sample is curated demonstration data, never a substitute for live inference.
+Live Qwen has **failed semantic-equivalence checks**, including after prompt mitigation. The conservative safety gate handles only recognized clauses; general semantic reliability remains blocked. Public AI stays disabled. Maximum token/context capacity, Vercel Hobby account/rate-limit availability, and deployed PDF runtime behavior remain **unverified**. See the [prioritized deployment audit](devpost/deployment-audit.md) for the sample-only release checklist and approval-required commands. Public demo: https://proofpath-ten.vercel.app — public AI intentionally disabled. The learner reports deployed sample, TXT/PDF upload and identical-document checks passed; this audit independently confirmed anonymous home/sample access. The static sample is curated demonstration data, never a substitute for live inference.
 
 ## Run locally
 
@@ -75,6 +75,12 @@ This checks one controlled main fixture with the full application schema and an 
 - Required missing, fabricated, wrong-source, or ambiguous-location evidence withholds the candidate.
 - Needs Review is distinct from withheld evidence. Withheld candidates mark analysis incomplete.
 - No automatic eligibility or authenticity judgments; no exhaustive-detection guarantee.
-- Live provider access, maximum context, actual Vercel Hobby protection, and deployed PDF behavior remain unverified.
+- Historical learner-run provider probes include successes and repeated semantic failures. Maximum context and actual Vercel Hobby protection remain unverified. Deployed PDF validation is learner-verified; automated browser coverage remains unverified.
 
 No database, persistent user-document storage, alternate model/provider fallback, VPS, Docker, or application background jobs are part of the approved architecture.
+
+## Submission evidence
+
+Public repository: https://github.com/zzzyyyddd/proofpath. See [submission readiness](devpost/submission-readiness.md) for mandatory requirements, evidence limits and the recording plan. The 79 deterministic tests use synthetic provider responses; neither they nor the static sample prove live model accuracy.
+
+The Devpost Learn Skill Pack is pre-existing development tooling; see [third-party notices](THIRD_PARTY_NOTICES.md). Original ProofPath development is recorded in October 22–23, 2026 commits. No open-source license for the original application has been selected.
