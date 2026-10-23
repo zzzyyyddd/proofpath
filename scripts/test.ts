@@ -10,3 +10,4 @@ import '../tests/unit/streams.test';
 import '../tests/unit/evaluation.test';
 import '../tests/unit/single-request.test';
 import '../tests/unit/maximum.test';
+import '../tests/unit/provider-timeouts.test';

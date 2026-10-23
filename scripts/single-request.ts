@@ -13,12 +13,21 @@ export function validateProbeArgs(args: string[]): string {
 export function singleRequest(fetcher: typeof fetch = fetch) {
   let requests = 0;
   let httpStatus: number | null = null;
+  let signal: AbortSignal | null = null;
   return {
     get requests() { return requests; },
     get httpStatus() { return httpStatus; },
+    get signalAborted() { return signal?.aborted ?? false; },
+    get abortReason() {
+      if (!signal?.aborted) return null;
+      // Never expose arbitrary abort reasons, errors, credentials or document text.
+      const name: unknown = signal.reason?.name;
+      return name === 'TimeoutError' || name === 'AbortError' ? name : 'Other';
+    },
     fetcher: (async (url, options) => {
       if (requests >= 1) throw new Error('One-request evaluation budget exhausted.');
       requests++;
+      signal = options?.signal ?? null;
       const response = await fetcher(url, { ...options, redirect: 'error' });
       httpStatus = response.status;
       return response;

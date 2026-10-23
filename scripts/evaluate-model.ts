@@ -24,6 +24,9 @@ const report = {
   fingerprints: null as unknown, extractedCharacters: null as unknown,
   responseBytes: null as number | null, durationMs: null as number | null,
   settings: { temperature: 0, maxOutputTokens: LIMITS.providerOutputTokens, stream: false },
+  providerTimeoutMs: LIMITS.providerTimeoutMs,
+  interruption: null as unknown,
+  requestCountMeaning: 'Local fetch invocations, not confirmed upstream executions or billing events.',
 };
 const sha256 = (text: string) => createHash('sha256').update(text).digest('hex');
 const started = performance.now();
@@ -64,5 +67,7 @@ main().catch(error => {
 }).finally(() => {
   report.networkCalls = request.requests; report.httpStatus = request.httpStatus;
   report.durationMs = Math.round(performance.now() - started);
+  report.interruption = { signalAborted: request.signalAborted, abortReason: request.abortReason,
+    responseHeadersReceived: request.httpStatus !== null, remoteCompletion: 'Unknown; local cancellation is not proof of remote cancellation.' };
   console.log(JSON.stringify(report, null, 2));
 });

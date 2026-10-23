@@ -7,6 +7,7 @@ As of 2026-10-23. No new live inference or deployment performed during this revi
 | Cloudflare zero-cost account configuration | PASS | Learner dashboard: Workers Free active; Paid not subscribed; no payment method. Reconfirm if account state changes. |
 | First real full-contract Qwen comparison | PASS | Learner probe #1: HTTP 200, exactly one request, schema/quotes/controlled 1 Added + 2 Modified semantics pass. |
 | Exact per-request neuron consumption | NOT VERIFIED | Dashboard 32.50 → 59.26; 26.76 observed delta only, not exact attribution. |
+| Removal completion within 60-second deadline, test #3 | FAIL / INCONCLUSIVE | Interrupted at 60,006 ms, HTTP null; schema/quotes/semantics NOT EVALUATED. See timeout-investigation.md; no follow-up inference without approval. |
 | Short-fixture semantic repeatability | NOT VERIFIED | Proposed main/optional/removal/equivalent/ambiguous: 3 fresh runs each, no calls yet; approval required. |
 | Single-request/no-retry/no-redirect probe controls | PASS | Offline guard checks second calls blocked after success/failure; CLI rejects conflicting budgets; no alternate provider or paid fallback. |
 | Input and deterministic evidence boundary checks | PASS | Local extraction/quote/location/schema tests; maximum English pair exactly 30,000 each; identical real route/client parser tested and browser retest passed. |
@@ -33,3 +34,5 @@ PDF.js uses the Node runtime, parses original bytes, blocks detected extraction 
 ## Smallest next step
 
 Approve or revise the explicit live sequence in `live-test-plan.md`: 15 short-fixture requests, reviewed one at a time, plus one maximum-English request only after accurate context preflight. Maximum ceiling 16 additional requests; stop on first failure. In parallel, inspect actual Vercel Hobby rule availability without accepting paid terms. Keep `ANALYSIS_ENABLED=false` in application/deployment configuration. Public launch remains blocked on the context, repeatability and hosted-account/runtime gates.
+
+Timeout investigation update: optional live test #2 passed once; removal test #3 was interrupted, not semantically evaluated. All 63 current offline tests and build checks pass after diagnostic/error-normalization repairs, but live repeatability remains blocked. Earlier statement that no unresolved failure was found predates test #3 and does not supersede this interruption evidence.

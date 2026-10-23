@@ -52,10 +52,11 @@ export async function generateCandidates(
   const signal = options.signal ? AbortSignal.any([options.signal, AbortSignal.timeout(LIMITS.providerTimeoutMs)]) : AbortSignal.timeout(LIMITS.providerTimeoutMs);
   let response: Response;
   try {
+    signal.throwIfAborted();
     response = await (options.fetcher ?? fetch)(
       `https://api.cloudflare.com/client/v4/accounts/${env.CLOUDFLARE_ACCOUNT_ID}/ai/run/${MODEL}`,
       {
-        method: 'POST', cache: 'no-store', signal,
+        method: 'POST', cache: 'no-store', redirect: 'error', signal,
         headers: { Authorization: `Bearer ${env.CLOUDFLARE_API_TOKEN}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: makeMessages(documents), stream: false, temperature: 0, max_tokens: LIMITS.providerOutputTokens,
           response_format: { type: 'json_schema', json_schema: candidateJsonSchema } }),
@@ -82,9 +83,14 @@ export async function generateCandidates(
       chunks.push(next.value);
     }
     const joined = Buffer.concat(chunks);
+    signal.throwIfAborted();
     let envelope: unknown;
     try { envelope = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(joined)); }
     catch { throw new ProofPathError('PROVIDER_RESPONSE_INVALID', 'The AI service returned an unreadable response.', 502); }
     return parseCloudflareResponse(envelope);
+  } catch (error) {
+    if (signal.aborted) throw new ProofPathError('ANALYSIS_INTERRUPTED', 'Analysis was cancelled or timed out. No partial output was presented.', 503);
+    if (error instanceof ProofPathError) throw error;
+    throw new ProofPathError('PROVIDER_UNAVAILABLE', 'The AI service response was interrupted. No partial output, fallback or automatic retry was used.', 503);
   } finally { await reader.cancel().catch(() => undefined); }
 }

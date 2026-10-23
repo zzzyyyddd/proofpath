@@ -167,3 +167,37 @@ Expected: HTTP 200, exactly one network call, schema PASS, quotation/source-loca
 The two environment overrides apply only to the standalone probe process; the application's `ANALYSIS_ENABLED=false` remains unchanged. No deploy or public activation.
 
 Maximum fixtures were regenerated to replace space padding with neutral punctuation, eliminating trailing-whitespace warnings without changing 30,000 characters per file or semantic locations. Their document/message hashes necessarily change; no prior maximum live result exists to invalidate. Production prompt/schema and small semantic fixtures are unchanged.
+
+## Verified test #2 and next proposed removal check
+
+Learner reports `optional` PASS at checkpoint f7e1197: HTTP 200; one network request; schema, exact quotations and controlled semantics PASS; 0 Added, 0 Removed, 1 Modified, 0 Needs Review; duration 5,439 ms; response 1,233 bytes. Neuron consumption not directly measured. No inference was performed by the agent when recording this result. A single fixture pass does not complete repeatability.
+
+Next proposed check is `removal`, prepared only, not executed. Old document:
+
+```text
+The repository must be public.
+A presentation slide deck is required.
+```
+
+New document:
+
+```text
+The repository must be public.
+```
+
+Exact expectation: one **Removed** finding; `old_quote` must be `A presentation slide deck is required.` and match its derived source location; `new_quote` must be JSON `null`, not an invented New quotation. No unchanged repository finding, no Added/Modified/Needs Review items, no withheld candidates and no incomplete result. A missing matching New passage is not exhaustive proof of absence.
+
+For normal WSL, only after authorization to execute the next one-request check:
+
+```bash
+cd ~/proofpath
+ANALYSIS_ENABLED=true CLOUDFLARE_FREE_PLAN_CONFIRMED=true \
+node --env-file=.env.local --import tsx scripts/evaluate-model.ts \
+  --confirm-free-plan --max-calls=1 --fixture=removal
+```
+
+Expected report: HTTP 200; exactly one network call; schema/quote/semantic PASS; counts Added 0, Removed 1, Modified 0, Needs Review 0. The existing CLI rejects conflicting budget flags; one-shot fetch guard blocks a second fetch even after failure and disables redirects. Model/provider are fixed; no fallback. Stop on any HTTP/schema/quote/semantic/incomplete failure, with no rerun. The environment overrides enable only this standalone process; keep application/deployment ANALYSIS_ENABLED=false and Workers Free unchanged. Do not deploy or enable public inference. Record actual duration/response size and leave neurons unavailable unless measured; do not reuse test #2 values as predictions.
+
+## Test #3 interruption — live evaluation paused
+
+Learner reported removal FAILED / INCONCLUSIVE: HTTP null, local fetch count 1, duration 60,006 ms, ANALYSIS_INTERRUPTED, source lengths 69/30. Schema, quotations and semantic classifications NOT EVALUATED. No semantic failure or pass inferred. Neuron consumption and remote completion unknown. Full hashes, timeout-layer audit, reasoning/sampling evidence and proposed single-request diagnostic are in [timeout investigation](timeout-investigation.md). The failed attempt remains in the record; earlier proposed repeatability sequence must not continue automatically. No further live request or parameter/timeout change authorized. Public application remains disabled.
