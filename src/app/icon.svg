@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 33 36" width="33" height="36">
+  <title>ProofPath</title>
+  <rect x="0.5" y="0.5" width="32" height="35" rx="8.5" fill="#0b1220" stroke="#2dd4bf" stroke-width="1"/>
+  <text x="16.5" y="18" text-anchor="middle" dominant-baseline="central" fill="#2dd4bf" font-family="Inter, Geist, ui-sans-serif, system-ui, sans-serif" font-size="19" font-weight="700" letter-spacing="-0.04em">P</text>
+</svg>
