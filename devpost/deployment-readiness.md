@@ -1,6 +1,6 @@
 # ProofPath — Deployment Readiness
 
-Status: implementation checks in progress; public deployment and live-model gates are not verified. This record does not change the approved scope, PRD, or specification.
+Status: see [the current prioritized audit](deployment-audit.md) for the sample-only release path and exact commands. Local offline checks pass; live semantic equivalence has failed. Public deployment remains unverified. This record does not change the approved scope, PRD, or specification.
 
 ## Local manual review in Windows Chrome
 

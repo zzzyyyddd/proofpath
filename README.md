@@ -6,7 +6,7 @@ Evidence-first comparison of two versions of hackathon rules. Built from the app
 
 The application now includes TXT/Markdown/PDF server validation, original-file re-extraction during Compare, strict candidate contracts, exact evidence locations, truthful stage streaming, classified/Needs Review/withheld states, a responsive Evidence Inspector and Source Context Viewer, and an explicitly labeled static sample. Retry, replacement, reset and refresh are session-only. These paths have offline route/unit checks; browser checks and public deployment are separate gates.
 
-Live Qwen semantic repeatability, maximum token/context capacity, Vercel Hobby account/rate-limit availability, and deployed PDF runtime behavior remain **unverified**. No public URL is claimed yet. The static sample is curated demonstration data, never a substitute for live inference.
+Live Qwen has **failed semantic-equivalence checks**, including after prompt mitigation. The conservative safety gate handles only recognized clauses; general semantic reliability remains blocked. Public AI stays disabled. Maximum token/context capacity, Vercel Hobby account/rate-limit availability, and deployed PDF runtime behavior remain **unverified**. See the [prioritized deployment audit](devpost/deployment-audit.md) for the sample-only release checklist and approval-required commands. No public URL is claimed yet. The static sample is curated demonstration data, never a substitute for live inference.
 
 ## Run locally
 
@@ -67,7 +67,7 @@ The live probe is opt-in and makes at most **one** call per invocation, with no 
 node --env-file=.env.local --import tsx scripts/evaluate-model.ts --confirm-free-plan --max-calls=1
 ```
 
-This checks one controlled main fixture with the full application schema and an independent exact semantic oracle. Optional `--fixture=removal`, `--fixture=equivalent`, `--fixture=ambiguous`, or `--fixture=optional` selects one different fixture; each invocation still makes at most one call, never an automatic suite or retry. Exact expected quotes are intentionally strict: a mismatch fails rather than silently relaxing the gate. These commands are prepared, not executed live. A single pass does **not** complete the three-run/multiple-fixture repeatability gate or maximum-context gate. A successful HTTP response, valid schema, or exact quotation is not proof of correct semantics. No paid plan or billing activation is authorized.
+This checks one controlled main fixture with the full application schema and an independent exact semantic oracle. Optional `--fixture=removal`, `--fixture=equivalent`, `--fixture=ambiguous`, or `--fixture=optional` selects one different fixture; each invocation still makes at most one call, never an automatic suite or retry. Exact expected quotes are intentionally strict: a mismatch fails rather than silently relaxing the gate. These commands require separate approval; prior learner-run probes include passes and semantic failures recorded in `devpost/checklist.md`. A single pass does **not** complete the three-run/multiple-fixture repeatability gate or maximum-context gate. A successful HTTP response, valid schema, or exact quotation is not proof of correct semantics. No paid plan or billing activation is authorized.
 
 ## Reliability boundaries
 

@@ -154,6 +154,7 @@ export default function ComparisonWorkspace() {
   return <>
     <section className={`hero ${visible ? 'compact-hero' : ''}`}><span className="eyebrow">Document comparison, with receipts</span><h1>Know what changed.<br /><span>See the proof.</span></h1><p>Compare two versions of a document, understand meaningful changes, and inspect the evidence behind every finding.</p></section>
     {!sample && <section className="upload-workspace" aria-label="Comparison workspace">
+      <p className="inline-limitation">The sample is curated demonstration data, not live AI. Upload validation does not mean analysis succeeded. If live analysis is disabled, different documents return an explicit error; identical text can be checked without AI.</p>
       <div className="section-heading"><h2>Your documents</h2>{result && <button className="text-button" onClick={reset}>New Comparison ↗</button>}</div>
       <div className="upload-grid"><UploadPanel id="old" upload={uploads.old} onFile={selectFile} /><UploadPanel id="new" upload={uploads.new} onFile={selectFile} /></div>
       <p className="limits">TXT, Markdown, text-based PDF · 2 MB and 30,000 extracted characters per file · Up to 10 PDF pages · English supported</p>
