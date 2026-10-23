@@ -6,7 +6,9 @@ Evidence-first comparison of two versions of hackathon rules. Built from the app
 
 The application now includes TXT/Markdown/PDF server validation, original-file re-extraction during Compare, strict candidate contracts, exact evidence locations, truthful stage streaming, classified/Needs Review/withheld states, a responsive Evidence Inspector and Source Context Viewer, and an explicitly labeled static sample. Retry, replacement, reset and refresh are session-only. These paths have offline route/unit checks; browser checks and public deployment are separate gates.
 
-Live Qwen has **failed semantic-equivalence checks**, including after prompt mitigation. The conservative safety gate handles only recognized clauses; general semantic reliability remains blocked. Public AI stays disabled. Maximum token/context capacity, Vercel Hobby account/rate-limit availability, and deployed PDF runtime behavior remain **unverified**. See the [prioritized deployment audit](devpost/deployment-audit.md) for the sample-only release checklist and approval-required commands. Public demo: https://proofpath-ten.vercel.app — public AI intentionally disabled. The learner reports deployed sample, TXT/PDF upload and identical-document checks passed; this audit independently confirmed anonymous home/sample access. The static sample is curated demonstration data, never a substitute for live inference.
+Live Qwen has **failed semantic-equivalence checks**, including after prompt mitigation. The conservative safety gate handles only recognized clauses; general semantic reliability is not established. The owner reports a successful main-fixture live probe (one request, one Added and two Modified findings, source checks passed). These observations do not establish general accuracy. Public demo: https://proofpath-ten.vercel.app — this preparation has not activated AI or changed production. The owner has authorized a later **experimental public activation**, conditional on confirmed free-plan usage and configured request protection. See [public AI activation](devpost/public-ai-activation.md) for exact settings, deployment steps and a one-comparison browser check.
+
+The learner reports deployed sample, TXT/PDF validation and identical-text checks passed. Curated sample findings are never substituted for live results. The protected route and production client parser are verified offline with synthetic provider output; a genuine public-browser comparison, current Vercel credential configuration and actual firewall enforcement remain unverified. Maximum live context capacity remains unverified.
 
 ## Run locally
 
@@ -81,6 +83,14 @@ No database, persistent user-document storage, alternate model/provider fallback
 
 ## Submission evidence
 
-Public repository: https://github.com/zzzyyyddd/proofpath. See [submission readiness](devpost/submission-readiness.md) for mandatory requirements, evidence limits and the recording plan. The 79 deterministic tests use synthetic provider responses; neither they nor the static sample prove live model accuracy.
+Public repository: https://github.com/zzzyyyddd/proofpath. See [submission readiness](devpost/submission-readiness.md) for mandatory requirements, evidence limits and the recording plan. The 86 deterministic tests use synthetic provider responses; neither they nor the static sample prove live model accuracy.
 
 The Devpost Learn Skill Pack is pre-existing development tooling; see [third-party notices](THIRD_PARTY_NOTICES.md). Original ProofPath development is recorded in October 22–23, 2026 commits. No open-source license for the original application has been selected.
+
+## Public inference protection
+
+On Vercel, enabled comparisons check the native firewall rule `proofpath-compare` before reading files. Missing rules, invalid platform configuration, blocked responses and a two-second check timeout fail closed without inference. A limited request returns HTTP 429 with Retry-After. Configure the included Hobby SDK rule for six requests per 60 seconds per IP. The SDK uses regional Vercel counters, not per-instance memory; this is not a global daily quota or authentication. Without this rule public live comparisons remain unavailable.
+
+One accepted comparison POST makes at most one Cloudflare inference fetch; there is no automatic retry, redirect or paid fallback. A manual retry is a new request. The app re-extracts originals, verifies quotes and locations, and distinguishes Needs Review/withheld results as before. Provider quota, interruption and invalid output are errors, never fabricated success. All comparisons, including identical inputs, are subject to the firewall when public analysis is enabled.
+
+Four manual server-side variables are needed: `ANALYSIS_ENABLED`, `CLOUDFLARE_FREE_PLAN_CONFIRMED`, `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN`. Public protection also requires Vercel's automatically supplied `VERCEL`, `NODE_ENV` and `VERCEL_PROJECT_PRODUCTION_URL`; leave system variables enabled. No additional manual secret, Redis, database or paid service is required. Local development does not have the distributed firewall and must not be publicly exposed with AI enabled. See the activation checklist for optional SDK environment variables and platform limits.

@@ -5,6 +5,7 @@ import { generateCandidates } from '@/lib/server/ai/cloudflare';
 import { buildResult } from '@/lib/server/results';
 import { LIMITS, serializeWithinBudget } from '@/lib/server/limits';
 import { ProofPathError } from '@/lib/shared/errors';
+import { enforceComparisonRateLimit } from '@/lib/server/compare-protection';
 
 export const runtime = 'nodejs';
 export const maxDuration = 120;
@@ -28,6 +29,7 @@ export async function POST(request: Request) {
       } catch { sameOrigin = false; }
     }
     if (!sameOrigin) throw new ProofPathError('INVALID_ORIGIN', 'Use the comparison form on this site.', 403);
+    await enforceComparisonRateLimit(request);
     form = await boundedMultipart(request);
     if ([...form.keys()].some(key => !['old', 'new', 'attemptId'].includes(key))) throw new ProofPathError('INVALID_REQUEST', 'Unexpected comparison fields.', 400);
     requireFile(form, 'old'); requireFile(form, 'new');

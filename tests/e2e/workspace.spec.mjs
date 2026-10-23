@@ -118,3 +118,40 @@ test('an interrupted stream does not expose completed results', async ({ page })
   await expect(page.getByRole('alert')).toContainText('stream was interrupted');
   await expect(page.getByRole('heading', { name: 'Comparison Overview' })).toHaveCount(0);
 });
+
+test('provider-result stream populates Overview and Inspector without opening the curated sample (offline synthetic)', async ({ page }) => {
+  // This is explicitly a synthetic UI transport test, never a live-provider claim.
+  const { buildResult } = await import('../../src/lib/server/results.ts');
+  const { STAGES } = await import('../../src/lib/client/requests.ts');
+  const { makeDocument } = await import('../../src/lib/server/documents/canonical-text.ts');
+  const { mainCandidates, oldRules, newRules } = await import('../fixtures/rules.ts');
+  let comparisons = 0;
+  await page.route('**/api/compare', async route => {
+    comparisons++;
+    const form = await new Response(route.request().postDataBuffer(), {
+      headers: { 'content-type': route.request().headers()['content-type'] },
+    }).formData();
+    const attemptId = String(form.get('attemptId'));
+    const result = buildResult(attemptId, {
+      old: makeDocument('old', 'uploaded-old.txt', oldRules),
+      new: makeDocument('new', 'uploaded-new.txt', newRules),
+    }, { candidates: mainCandidates.map(c => ({ ...c, title: 'Provider path: ' + c.title })), analysis_complete: true });
+    const stages = STAGES.flatMap(name => ['started', 'done'].map(status => ({ type: 'stage', attemptId, name, status })));
+    const body = [...stages, { type: 'result', attemptId, result }].map(event => JSON.stringify(event)).join('\n') + '\n';
+    await route.fulfill({ status: 200, contentType: 'application/x-ndjson', body });
+  });
+  await page.goto('/');
+  await choose(page, 'Old Version', upload('uploaded-old.txt', oldRules));
+  await choose(page, 'New Version', upload('uploaded-new.txt', newRules));
+  const compare = page.getByRole('button', { name: 'Compare Documents', exact: false });
+  await expect(compare).toBeEnabled(); await compare.click();
+  await expect(page.getByRole('heading', { name: 'Comparison Overview' })).toBeVisible();
+  await expect(page.locator('.sample-banner')).toHaveCount(0);
+  await page.getByRole('button', { name: /Provider path: Team size limit changed/ }).click();
+  const inspector = page.locator('.inspector');
+  await expect(inspector.getByText('Teams may have up to five members.', { exact: true })).toBeVisible();
+  await expect(inspector.getByText('Teams may have up to three members.', { exact: true })).toBeVisible();
+  await inspector.getByRole('button', { name: 'View Source Context' }).first().click();
+  await expect(page.getByRole('region', { name: 'Source Context Viewer' }).locator('mark')).toHaveText('Teams may have up to five members.');
+  expect(comparisons).toBe(1);
+});

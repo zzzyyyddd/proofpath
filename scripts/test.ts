@@ -14,3 +14,4 @@ import '../tests/unit/provider-timeouts.test';
 import '../tests/unit/semantic-regressions.test';
 import '../tests/unit/semantic-safety.test';
 import '../tests/unit/semantic-safety-route.test';
+import '../tests/unit/compare-protection.test';

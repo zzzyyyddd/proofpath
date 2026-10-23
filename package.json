@@ -17,6 +17,7 @@
     "browser:check": "node scripts/check-browser.mjs"
   },
   "dependencies": {
+    "@vercel/firewall": "1.2.6",
     "next": "16.4.2",
     "pdfjs-dist": "6.4.299",
     "react": "19.3.0",

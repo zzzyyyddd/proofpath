@@ -33,5 +33,5 @@ export function safeError(error: unknown) {
 }
 export function errorResponse(error: unknown) {
   const e = safeError(error);
-  return Response.json({ error: { code: e.code, message: e.message } }, { status: e.status, headers: { 'Cache-Control': 'no-store' } });
+  return Response.json({ error: { code: e.code, message: e.message } }, { status: e.status, headers: { 'Cache-Control': 'no-store', ...(e.status === 429 ? { 'Retry-After': '60' } : {}) } });
 }
