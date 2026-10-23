@@ -6,9 +6,17 @@ Evidence-first comparison of two versions of hackathon rules. Built from the app
 
 The application now includes TXT/Markdown/PDF server validation, original-file re-extraction during Compare, strict candidate contracts, exact evidence locations, truthful stage streaming, classified/Needs Review/withheld states, a responsive Evidence Inspector and Source Context Viewer, and an explicitly labeled static sample. Retry, replacement, reset and refresh are session-only. These paths have offline route/unit checks; browser checks and public deployment are separate gates.
 
-Live Qwen has **failed semantic-equivalence checks**, including after prompt mitigation. The conservative safety gate handles only recognized clauses; general semantic reliability is not established. The owner reports a successful main-fixture live probe (one request, one Added and two Modified findings, source checks passed). These observations do not establish general accuracy. Public demo: https://proofpath-ten.vercel.app — this preparation has not activated AI or changed production. The owner has authorized a later **experimental public activation**, conditional on confirmed free-plan usage and configured request protection. See [public AI activation](devpost/public-ai-activation.md) for exact settings, deployment steps and a one-comparison browser check.
+## Try the public demo
 
-The learner reports deployed sample, TXT/PDF validation and identical-text checks passed. Curated sample findings are never substituted for live results. The protected route and production client parser are verified offline with synthetic provider output; a genuine public-browser comparison, current Vercel credential configuration and actual firewall enforcement remain unverified. Maximum live context capacity remains unverified.
+Real AI comparison is available at [ProofPath](https://proofpath-ten.vercel.app), using Qwen3 via Cloudflare Workers AI (`@cf/qwen/qwen3-30b-a3b-fp8`). Public comparisons have displayed AI-generated findings and verified source passages, and provider usage has confirmed model activity.
+
+- **Live comparison:** upload two different supported documents and select **Compare Documents**. Inspect each finding and its source passages against the original documents. Identical documents may be compared without an AI call.
+- **Curated sample:** select **Explore Sample Analysis** to inspect static demonstration findings and source context. Opening the sample does not call AI, and sample data is never substituted for live results.
+- **Availability:** Cloudflare Free quota limits or provider outages may temporarily prevent live analysis. An unavailable comparison reports an error; uptime is not guaranteed.
+
+AI-generated findings may be incomplete or incorrect. Verified source quotations confirm text matches, not that an interpretation is correct. Always inspect the original documents. Historical live probes include semantic-equivalence failures; general classification accuracy and maximum live context capacity are not established. Source matching does not verify document authenticity.
+
+For a brief public check, try the curated sample first, then compare two different TXT, Markdown or supported PDF documents. Inspect the findings and source context, and confirm that the sample remains explicitly labeled. A live comparison makes a provider request; local automated checks below use synthetic responses and do not measure model accuracy. See [public AI activation](devpost/public-ai-activation.md) for configuration history and [deployment readiness and manual checks](devpost/deployment-readiness.md) for the broader review sequence.
 
 ## Run locally
 
